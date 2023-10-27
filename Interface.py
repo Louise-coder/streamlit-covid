@@ -15,6 +15,8 @@ selected_color = st.sidebar.color_picker("Select a color for the curve", "#905DB
 start_date = st.sidebar.date_input("Start date")
 end_date = st.sidebar.date_input("End date")
 
+if end_date < start_date:
+    st.error("Erreur : La date de fin doit être ultérieure à la date de début.")
 
 if st.sidebar.button("Done"):
     # Affichage des choix

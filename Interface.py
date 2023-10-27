@@ -16,7 +16,7 @@ start_date = st.sidebar.date_input("Start date")
 end_date = st.sidebar.date_input("End date")
 
 if end_date < start_date:
-    st.error("Erreur : La date de fin doit être ultérieure à la date de début.")
+    st.error("Error: The end date must be later than the start date.")
 
 if st.sidebar.button("Done"):
     # Affichage des choix

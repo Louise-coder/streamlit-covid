@@ -53,7 +53,9 @@ Navigate to the project directory in your terminal and execute the following com
     ```
 After running the above command, a new browser window will open, and you'll be able to interact with the Streamlit Covid Dashboard.
 
-Alternatively, you can access the application directly via the following Streamlit link: [![Click here!](https://img.shields.io/badge/Click%20here%21-Open%20Streamlit%20Covid%20Dashboard-blue?style=for-the-badge)](https://your-streamlit-app-link-here)
+Alternatively, you can access the application directly via the following Streamlit link: 
+
+[![Click here!](https://img.shields.io/badge/Click%20here%21-Open%20Streamlit%20Covid%20Dashboard-blue?style=for-the-badge)](https://your-streamlit-app-link-here)
 
 
 

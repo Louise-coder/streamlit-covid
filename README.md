@@ -1,5 +1,6 @@
 # Streamlit Covid Dashboard
 
+## Table of contents
 1. [Introduction](#introduction)
 2. [Project Contributors](#project-contributors)
 3. [Project Description](#project-description)
@@ -11,8 +12,6 @@
 This project, developed as part of the UE Python2, presents a Streamlit-based Covid19 Dashboard. The dashboard allows users to track the progression of Covid-19 cases over time for selected countries, with options to customize the display. 
 
 **Streamlit**, the foundational technology behind this application, is an open-source Python library designed for creating interactive web applications effortlessly. It empowers data scientists and developers to transform data, visualizations, and analyses into user-friendly web applications with minimal code. By integrating Streamlit, this project provides a user-friendly interface for monitoring Covid-19 cases, making it accessible and informative.
-
-Explore the latest Covid-19 data and trends with ease through the intuitive Streamlit interface and the power of Python.
 
 ## Project Contributors
 - BENRADHIA Takwa
@@ -43,7 +42,7 @@ To run the application, follow these steps:
    ```
 
 2. Install Required Libraries
-    Make sure you have the necessary libraries installed. This project requires the following libraries:
+    
 - Streamlit
 - Pandas
 - Matplotlib
@@ -52,8 +51,9 @@ You can install them using the following command:
 ```bash
 pip install streamlit pandas matplotlib
 ```
-3. Run the Application
-    Once the libraries are installed, you can run the Streamlit application. Navigate to the project directory in your terminal and execute the following command:
+3. Run the Application.
+
+Navigate to the project directory in your terminal and execute the following command:
 
 ```bash 
 streamlit run demo.py
@@ -64,14 +64,12 @@ After running the above command, a new browser window will open, and you'll be a
 Alternatively, you can access the application directly via the following Streamlit link: [Streamlit Covid Dashboard](link_here).
 
 
-
 ## Technical Details
 
 - **Python Version**: Python 3.10
 - **Streamlit Version**: v1.28.0
 - **Matplotlib Version**: insert_latest_version_here
 - **Pandas Version**: insert_latest_version_here
-
 
 
 

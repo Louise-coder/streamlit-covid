@@ -34,7 +34,7 @@ The Streamlit Covid Dashboard provides the following functionalities:
 To watch a demonstration of the project, view our [demo video on Canva](https://www.canva.com/design/DAFy1Cxgkag/GLL2fKyUclNy0Ky3sJCWDw/edit?utm_content=DAFy1Cxgkag&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton).
 
 
-### Getting Started
+## Getting Started
 To run the application, follow these steps:
 
 1. Clone this repository.

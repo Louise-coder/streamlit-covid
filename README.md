@@ -1,4 +1,4 @@
-# Streamlit Covid Dashboard
+# Streamlit COVID-19 Time Series Tracker 😷
 
 ## Table of contents
 1. [Introduction](#introduction)
@@ -11,7 +11,7 @@
 ## Introduction
 This project, developed as part of the UE Python2, presents a Streamlit-based Covid19 Dashboard. The dashboard allows users to track the progression of Covid-19 cases over time for selected countries, with options to customize the display. 
 
-**Streamlit**, the foundational technology behind this application, is an open-source Python library designed for creating interactive web applications effortlessly. It empowers data scientists and developers to transform data, visualizations, and analyses into user-friendly web applications with minimal code. By integrating Streamlit, this project provides a user-friendly interface for monitoring Covid-19 cases, making it accessible and informative.
+**Streamlit**, the foundational technology behind this application, is an open-source Python library designed for creating interactive web applications effortlessly. It empowers data scientists and developers to transform data, visualizations, and analyses into user-friendly web applications with minimal code. By integrating Streamlit, this project provides a user-friendly interface for monitoring Covid-19 cases, making it accessible and informative !
 
 ## Project Contributors
 - BENRADHIA Takwa
@@ -42,15 +42,9 @@ To run the application, follow these steps:
    ```
 
 2. Install Required Libraries
-    
-- Streamlit
-- Pandas
-- Matplotlib
-
-You can install them using the following command:
-```bash
-pip install streamlit pandas matplotlib
-```
+    ```bash
+    pip install streamlit pandas matplotlib
+    ```
 3. Run the Application.
 
 Navigate to the project directory in your terminal and execute the following command:
@@ -66,12 +60,12 @@ Alternatively, you can access the application directly via the following Streaml
 
 ## Technical Details
 
-- **Python Version**: Python 3.10
-- **Streamlit Version**: v1.28.0
+- **Python Version**: 3.10
+- **Streamlit Version**: 1.28.0
 - **Matplotlib Version**: insert_latest_version_here
 - **Pandas Version**: insert_latest_version_here
 
 
 
-Explore the latest Covid-19 data with our Streamlit Covid19 Dashboard and stay informed effortlessly !
+👋 Explore the latest Covid-19 data with our Streamlit Covid19 Dashboard and stay informed effortlessly !
 

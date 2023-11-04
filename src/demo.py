@@ -2,10 +2,8 @@
 
 Usage:
 ======
-If you are in streamlit-covid/ repository, run:
-    streamlit run src/demo.py 
-You can also go to the src/ repository and run:
-    streamlit run demo.py
+From streamlit-covid/ repository, run:
+    streamlit run src/demo.py
 
 """
 
@@ -24,11 +22,12 @@ __contacts__ = (
 __copyright__ = "Universite Paris-Cite"
 __date__ = "2023"
 
-from datetime import datetime as dt, timedelta
+from datetime import datetime as dt, timedelta, date
 import folium
 from folium import Map
 
 # TODO utiliser matplotlib
+import numpy as np
 import matplotlib.pyplot as plt
 
 import pandas as pd
@@ -294,12 +293,17 @@ def display_form_and_get_results() -> Dict:
     form_results["color"] = st.color_picker(
         "Select a color for the curve", "#905DB7"
     )
-    form_results["start_date"] = st.date_input("Start date")
+    form_results["start_date"] = st.date_input(
+        "Start date",
+        value=date.today() - timedelta(days=1) # Plus pratique
+    )
     form_results["end_date"] = st.date_input(
         "End date",
-        value=form_results["start_date"] + timedelta(days=1),
+        #value=form_results["start_date"] + timedelta(days=1), #ce n'est pas pratique
     )
-    # bien de rajouter le choix du type de plot
+    form_results["graph"] = st.selectbox(
+        'Select the graph type',
+        ('Curve','Histogram'))
     verify_dates(form_results["start_date"], form_results["end_date"])
     return form_results
 
@@ -324,6 +328,51 @@ def close_expander():
     st.session_state["expander_state"] = False
 
 
+def get_data_form_results(form_results : Dict) -> DataFrame:
+    #on récupère les cas de covid du pays choisi entre start_date et end_date
+    df_data_form_country = df_covid_data_our_countries[df_covid_data_our_countries["location"] == form_results["country"]]
+    
+    df_data_form_results = df_data_form_country[
+        (pd.to_datetime(df_data_form_country["date"]) >= pd.to_datetime(form_results["start_date"])) &
+        (pd.to_datetime(df_data_form_country["date"]) <= pd.to_datetime(form_results["end_date"]))
+    ]
+    
+    return df_data_form_results
+
+
+def display_curve(data : Tuple, form_results : Dict):
+    #représentation graph sous forme de courbe
+    fig = plt.figure(figsize=(8,8))
+    plt.plot(data[0], data[1], color = form_results["color"], label='Nombre de cas de COVID-19')
+    plt.xlabel('Date')
+    plt.ylabel('Nombre de cas')
+    plt.title('Évolution du nombre de cas de COVID-19 au cours du temps')
+    plt.xticks(rotation=45)  # Rotation des étiquettes de l'axe des x pour une meilleure lisibilité
+    st.pyplot(fig)
+
+
+def display_hist(data : Tuple, form_results : Dict):
+    #représentation graph sous forme d'histogramme
+    fig = plt.figure(figsize=(8, 8))
+    plt.bar(data[0], data[1], color = form_results["color"])
+    plt.xlabel('Date')
+    plt.ylabel('Nombre de cas de COVID-19')
+    plt.title('Nombre de cas de COVID-19 par date')
+    plt.grid(axis='y')
+    plt.xticks(rotation=45)
+    st.pyplot(fig)
+
+
+def display_graph_evolution_form_results(form_results: Dict):
+    df_covid_data_form_results = get_data_form_results(form_results)
+    x = pd.to_datetime(df_covid_data_form_results["date"])
+    y = df_covid_data_form_results["total_cases"]
+    if form_results["graph"] == "Curve":
+        display_curve((x,y), form_results)
+    else :
+        display_hist((x,y), form_results)
+
+
 def submit_form_when_done_clicked(form_results: Dict):
     """Submit the form results (and close the expander) when the Done
     button is clicked.
@@ -343,6 +392,7 @@ def submit_form_when_done_clicked(form_results: Dict):
             {end_date_f}:
             """
         )
+        display_graph_evolution_form_results(form_results)
 
 
 def display_visualisation_page():

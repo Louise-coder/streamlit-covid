@@ -43,14 +43,15 @@ To run the application, follow these steps:
 
 2. Install Required Libraries
     ```bash
-    pip install streamlit pandas matplotlib
+    pip install streamlit pandas matplotlib folium streamlit_folium # with pip
+    conda install -y streamlit pandas matplotlib folium streamlit_folium # with conda mais tout marche pas...
     ```
 3. Run the Application.
 
 Navigate to the project directory in your terminal and execute the following command:
-    ```bash 
-    streamlit run demo.py
-    ```
+```bash 
+streamlit run src/demo.py
+```
 After running the above command, a new browser window will open, and you'll be able to interact with the Streamlit Covid Dashboard.
 
 Alternatively, you can access the application directly via the following Streamlit link: 

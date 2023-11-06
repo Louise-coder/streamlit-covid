@@ -167,3 +167,5 @@ def display_covid_page():
     submit_form_when_done_clicked(form_results)
 
 
+# if __name__ == "__main__":
+#     display_covid_page()

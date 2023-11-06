@@ -45,3 +45,5 @@ def display_datasets_page():
     display_dataframe(df_covid_data_our_countries)
 
 
+# if __name__ == "__main__":
+#     display_datasets_page()

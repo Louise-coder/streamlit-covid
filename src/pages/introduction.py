@@ -106,3 +106,5 @@ def display_introduction_page():
     display_map_description()
 
 
+# if __name__ == "__main__":
+#     display_introduction_page()

@@ -96,7 +96,15 @@ def display_selected_page(selected_page: str):
 
 
 if __name__ == "__main__":
-    display_project_title()
+    # ? est ce qu'on veut garder les radiobuttons ou utiliser la
+    # ? navigation par défaut de streamlit ?
+    no_sidebar_style = """
+        <style>
+            div[data-testid="stSidebarNav"] {display: none;}
+        </style>
+    """
+    st.markdown(no_sidebar_style, unsafe_allow_html=True)
+
     st.title(PROJECT_TITLE)
     my_selected_page = display_sidebar_and_get_selected_page()
     display_selected_page(my_selected_page)

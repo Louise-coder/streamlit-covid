@@ -52,7 +52,7 @@ def display_form_and_get_results() -> Dict:
         # value=form_results["start_date"] + timedelta(days=1), #ce n'est pas pratique
     )
     form_results["graph"] = st.selectbox(
-        "Select the graph type", ("Curve", "Histogram")
+        "Select the graph type", ("Curve", "Bar")
     )
     verify_dates(form_results["start_date"], form_results["end_date"])
     return form_results
@@ -79,7 +79,19 @@ def close_expander():
 
 
 def get_data_form_results(form_results: Dict) -> DataFrame:
-    # on récupère les cas de covid du pays choisi entre start_date et end_date
+    """Returns data on covid cases in the selected country 
+    between start date and end date.
+
+    Parameters
+    ----------
+    form_results : Dict
+        The dictionnary containing the results of the form.
+
+    Returns
+    -------
+    df_data_form_results : DataFrame
+        data on covid cases
+    """
     df_data_form_country = df_covid_data_our_countries[
         df_covid_data_our_countries["location"] == form_results["country"]
     ]
@@ -99,43 +111,66 @@ def get_data_form_results(form_results: Dict) -> DataFrame:
 
 
 def display_curve(data: Tuple, form_results: Dict):
-    # représentation graph sous forme de courbe
+    """Displays graph of covid cases as a curve.
+
+    Parameters
+    ----------
+    data : Tuple 
+        Tuple containing x and y coordinates to plot the graph.
+    form_results : Dict
+        The dictionnary containing the results of the form.
+    """
     fig = plt.figure(figsize=(8, 8))
     plt.plot(
         data[0],
         data[1],
         color=form_results["color"],
-        label="Nombre de cas de COVID-19",
+        label="Number of COVID-19 cases",
     )
     plt.xlabel("Date")
-    plt.ylabel("Nombre de cas")
-    plt.title("Évolution du nombre de cas de COVID-19 au cours du temps")
+    plt.ylabel("Number of cases")
+    plt.title("Evolution of the number of COVID-19 cases over time")
     plt.xticks(
         rotation=45
-    )  # Rotation des étiquettes de l'axe des x pour une meilleure lisibilité
+    )
     st.pyplot(fig)
 
 
-def display_hist(data: Tuple, form_results: Dict):
-    # représentation graph sous forme d'histogramme
+def display_bar(data: Tuple, form_results: Dict):
+    """Displays a bar graph of covid cases.
+
+    Parameters
+    ----------
+    data : Tuple 
+        Tuple containing x and y coordinates to plot the graph.
+    form_results : Dict
+        The dictionnary containing the results of the form.
+    """
     fig = plt.figure(figsize=(8, 8))
     plt.bar(data[0], data[1], color=form_results["color"])
     plt.xlabel("Date")
-    plt.ylabel("Nombre de cas de COVID-19")
-    plt.title("Nombre de cas de COVID-19 par date")
+    plt.ylabel("Number of COVID-19 cases")
+    plt.title("Number of COVID-19 cases per date")
     plt.grid(axis="y")
     plt.xticks(rotation=45)
     st.pyplot(fig)
 
 
 def display_graph_evolution_form_results(form_results: Dict):
+    """Displays the selected graph of covid cases.
+
+    Parameters
+    ----------
+    form_results : Dict 
+        The dictionnary containing the results of the form.
+    """
     df_covid_data_form_results = get_data_form_results(form_results)
     x = pd.to_datetime(df_covid_data_form_results["date"])
     y = df_covid_data_form_results["total_cases"]
     if form_results["graph"] == "Curve":
         display_curve((x, y), form_results)
     else:
-        display_hist((x, y), form_results)
+        display_bar((x, y), form_results)
 
 
 def submit_form_when_done_clicked(form_results: Dict):

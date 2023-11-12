@@ -7,7 +7,7 @@ from common import df_covid_data, df_covid_data_our_countries
 
 
 def display_streamlit_introduction():
-    """Display the introduction: what is streamlit?"""
+    """Display the introduction: 'what is streamlit?'."""
     st.write(
         "Streamlit is an open-source Python library that makes it easy to \
         create and share beautiful, custom web apps for machine learning \
@@ -30,7 +30,7 @@ def get_europe_map() -> Map:
 
 
 def format_tooltip_properties(properties, df: DataFrame) -> str:
-    """_summary_
+    """_summary_ .
 
     Parameters
     ----------

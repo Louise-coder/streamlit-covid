@@ -12,6 +12,7 @@ country_options = [
     "Italy",
     "Sweden",
     "England",
+    "World"
 ]
 df_covid_data = pd.read_csv("data/" + CSV_FILE_PATH)
 df_covid_data_our_countries = df_covid_data[

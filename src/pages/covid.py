@@ -1,9 +1,10 @@
-import streamlit as st
 from typing import Tuple, Dict
+from datetime import datetime as dt, timedelta, date
+import streamlit as st
 from pandas import DataFrame
 import pandas as pd
 import matplotlib.pyplot as plt
-from datetime import datetime as dt, timedelta, date
+
 
 from common import country_options, df_covid_data_our_countries
 
@@ -49,7 +50,8 @@ def display_form_and_get_results() -> Dict:
     )
     form_results["end_date"] = st.date_input(
         "End date",
-        # value=form_results["start_date"] + timedelta(days=1), #ce n'est pas pratique
+        # value=form_results["start_date"] + timedelta(days=1),
+        # ce n'est pas pratique
     )
     form_results["graph"] = st.selectbox(
         "Select the graph type", ("Curve", "Bar")
@@ -79,7 +81,7 @@ def close_expander():
 
 
 def get_data_form_results(form_results: Dict) -> DataFrame:
-    """Returns data on covid cases in the selected country 
+    """Return data on covid cases in the selected country
     between start date and end date.
 
     Parameters
@@ -111,11 +113,11 @@ def get_data_form_results(form_results: Dict) -> DataFrame:
 
 
 def display_curve(data: Tuple, form_results: Dict):
-    """Displays graph of covid cases as a curve.
+    """Display graph of covid cases as a curve.
 
     Parameters
     ----------
-    data : Tuple 
+    data : Tuple
         Tuple containing x and y coordinates to plot the graph.
     form_results : Dict
         The dictionnary containing the results of the form.
@@ -137,11 +139,11 @@ def display_curve(data: Tuple, form_results: Dict):
 
 
 def display_bar(data: Tuple, form_results: Dict):
-    """Displays a bar graph of covid cases.
+    """Display a bar graph of covid cases.
 
     Parameters
     ----------
-    data : Tuple 
+    data : Tuple
         Tuple containing x and y coordinates to plot the graph.
     form_results : Dict
         The dictionnary containing the results of the form.
@@ -157,11 +159,11 @@ def display_bar(data: Tuple, form_results: Dict):
 
 
 def display_graph_evolution_form_results(form_results: Dict):
-    """Displays the selected graph of covid cases.
+    """Display the selected graph of covid cases.
 
     Parameters
     ----------
-    form_results : Dict 
+    form_results : Dict
         The dictionnary containing the results of the form.
     """
     df_covid_data_form_results = get_data_form_results(form_results)

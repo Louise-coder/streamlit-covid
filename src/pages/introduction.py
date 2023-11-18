@@ -1,110 +1,126 @@
-import folium
-from folium import Map
+''' Ce module contient la fonction pour afficher la page dédiée
+    à introduire streamlit.
+'''
+
+# IMPORTS
 import streamlit as st
+import folium
 from streamlit_folium import folium_static
-from pandas import DataFrame
-from common import df_covid_data, df_covid_data_our_countries
+from pages.datasets import DF_PAYS_COVID
 
 
-def display_streamlit_introduction():
-    """Display the introduction: 'what is streamlit?'."""
-    st.write(
-        "Streamlit is an open-source Python library that makes it easy to \
-        create and share beautiful, custom web apps for machine learning \
-        and data science. Here is an exemple of the power of Streamlit:"
-    )
+# CLASSE CARTE
+class CarteCovid:
+    """Classe pour la carte des cas COVID-19."""
+    def __init__(self, df_initial):
+        """Initialise la classe CarteCovid.
+
+        Paramètres
+        ----------
+        df_covid_data : DataFrame
+            Le DataFrame contenant les données COVID.
+        """
+        self.df_pays_covid = df_initial
 
 
-def get_europe_map() -> Map:
-    """Get Europe map.
+    def formater_infobulle_proprietes(self, properties, df_index) -> str:
+        """Formate les propriétés pour afficher dans une infobulle.
 
-    Returns
-    -------
-    europe_map : Map
-        The Europe map.
-    """
-    europe_map = folium.Map(
-        location=[57, 10], zoom_start=3.3, scrollWheelZoom=False
-    )
-    return europe_map
+        Paramètres
+        ----------
+        properties : dict
+            Dictionnaire des propriétés du pays.
 
-
-def format_tooltip_properties(properties, df: DataFrame) -> str:
-    """_summary_ .
-
-    Parameters
-    ----------
-    properties : _type_
-        _description_
-    df : DataFrame
-        _description_
-
-    Returns
-    -------
-    tooltip : str
-        _description_
-    """
-    country_name = properties["NAME"]  # ? un dictionnaire ?
-    total_cases = df.loc[country_name, "total_cases"]
-    for elem in total_cases:
-        if type(elem) == float:
-            total_cases = elem
-    if country_name == "Sweden" or country_name == "England":
-        total_cases = "No data"
-    tooltip = f"Country: {country_name}<br>Total Cases: {total_cases}"
-    return tooltip
+        Retourne
+        -------
+        infobulle : str
+            Texte pour l'infobulle.
+        """
+        # Récupère le nom du pays
+        nom_pays = properties["NAME"]
+        # Récupère le nombre total de cas
+        cas_total = df_index.loc[nom_pays, "total_cases"]
+        # Traitement des cas où le nombre total est de type float
+        if isinstance(cas_total, float):
+            cas_total = int(cas_total)
+        # Traitement des cas sans données
+        if nom_pays in ('Suède', 'Angleterre'):
+            cas_total = "Pas de données"
+        # Construction du texte de l'infobulle
+        infobulle = f"Pays : {nom_pays}<br>Cas totaux : {cas_total}"
+        return infobulle
 
 
-def display_map(covid_data_df: DataFrame):
-    """Display the map corresponding to the df containing covid data.
+    def affiche_carte(self):
+        """Affiche la carte correspondant au DataFrame des données COVID.
+        Parameters
+        ----------
+        self : objet
+            L'instance de la classe CarteCovid.
+        """
+        # Création de la carte centrée sur l'Europe
+        carte_europe = folium.Map(location=[57, 10], zoom_start=3.3, scrollWheelZoom=False)
+        # Ajout d'une couche choroplèthe à la carte
+        choropleth = folium.Choropleth(
+            # Fichier GeoJSON définissant les frontières des pays
+            geo_data="data/covid-map.geojson",
+            # DataFrame contenant les données COVID
+            data=self.df_pays_covid,
+            # Colonnes à utiliser dans le DataFrame
+            columns=("location", "total_cases"),
+            # Clé pour faire correspondre les données GeoJSON et DataFrame
+            key_on="feature.properties.NAME",
+            # Met en évidence les pays au survol de la souris
+            highlight=True,
+            # Légende
+            legend_name="Cas totaux de COVID19",
+        ).add_to(carte_europe)  # Ajoute la couche à la carte
 
-    Parameters
-    ----------
-    covid_data_df : DataFrame
-        The dataframe containing covid data.
-    """
-    europe_map = get_europe_map()
-    choropleth = folium.Choropleth(
-        geo_data="data/covid-map.geojson",
-        data=df_covid_data_our_countries,
-        columns=("location", "total_cases"),
-        key_on="feature.properties.NAME",
-        line_opacity=1,
-        highlight=True,
-        legend_name="Total cases of COVID19",
-    ).add_to(europe_map)
-    df_indexed = covid_data_df.set_index("location")
-    # Ajoutez un tooltip personnalisé basé sur le DataFrame
-    for feature in choropleth.geojson.data["features"]:
-        tooltip = format_tooltip_properties(
-            feature["properties"], df_indexed
+        # Indexation du DataFrame par le nom du pays
+        df_index = self.df_pays_covid.set_index("location")
+
+        # Ajout des infobulles personnalisées basées sur le DataFrame
+        for feature in choropleth.geojson.data["features"]:
+            # Formatage des infobulles
+            infobulle = self.formater_infobulle_proprietes(
+                            feature["properties"], df_index
+                            )
+            # Ajout des infobulles aux propriétés du GeoJSON
+            feature["properties"]["infobulle"] = infobulle
+
+        # Ajout d'une couche d'infobulles à la carte
+        choropleth.geojson.add_child(
+            folium.features.GeoJsonTooltip(
+                fields=["infobulle"],  # Les données à afficher
+                labels=True   # Affiche l'étiquette des données
+            )
         )
-        feature["properties"]["tooltip"] = tooltip
 
-    choropleth.geojson.add_child(
-        folium.features.GeoJsonTooltip(
-            fields=["tooltip"], aliases=["Tooltip"], labels=True
-        )
-    )
-    st_map = folium_static(europe_map, width=700, height=450)
+        # Affichage de la carte dans le cadre Streamlit
+        folium_static(carte_europe, width=700, height=450)
 
 
-def display_map_description():
-    """Display the map's description."""
+# FONCTION
+def affiche_page_intro():
+    """Affiche la page 'Qu'est-ce que Streamlit?'."""
+    st.header("Qu'est-ce que Streamlit?")
+    # afficher la description de streamlit
     st.write(
-        "The map above shows the total cases of COVID-19 in Europe: the \
-        darker blue the country is, the more cases it has. And the grey \
-        ones are the countries that have no data."
+        "Streamlit est une bibliothèque Python open-source qui facilite \
+        la création et le partage d'applications web personnalisées pour \
+        l'apprentissage automatique et la science des données."
+    )
+    # Création de l'objet CarteCovid et affichage de la carte
+    carte_covid = CarteCovid(DF_PAYS_COVID)
+    carte_covid.affiche_carte()
+
+    # afficher la description de la carte
+    st.write(
+        "La carte ci-dessus montre les cas totaux de COVID-19 dans certains\
+        pays d'Europe : plus le pays est en bleu foncé, plus il a de cas. \
+        Et les pays gris sont ceux qui n'ont pas de données."
     )
 
 
-def display_introduction_page():
-    """Display the what's streamlit page."""
-    st.header("What is streamlit?")
-    display_streamlit_introduction()
-    display_map(df_covid_data)
-    display_map_description()
-
-
-# if __name__ == "__main__":
-#     display_introduction_page()
+if __name__ == "__main__":
+    affiche_page_intro()

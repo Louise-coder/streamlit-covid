@@ -1,13 +1,13 @@
-"""Module containing the Streamlit covid application.
+"""Module contenant l'application Streamlit COVID.
 
-Usage:
-======
-From streamlit-covid/ repository, run:
+Utilisation :
+=============
+Depuis le dépôt streamlit-covid/, exécutez :
     streamlit run src/demo.py
 
 """
 
-__authors__ = (
+__auteurs__ = (
     "Takwa BEN RADHIA",
     "Dounia BENYAKHLAF",
     "Louise LAM",
@@ -22,89 +22,77 @@ __contacts__ = (
 __copyright__ = "Universite Paris-Cite"
 __date__ = "2023"
 
+
+# IMPORTS
 import streamlit as st
-
-
-from common import PROJECT_TITLE
-from pages.introduction import display_introduction_page
-from pages.datasets import display_datasets_page
+from pages.introduction import affiche_page_intro
+from pages.datasets import afficher_page_donnees
 from pages.covid import display_covid_page
 
 
-def display_sidebar_page_choices_and_get_selected_page():
-    """Display the pages in radio button format and returns the selected page.
+# FONCTIONS
+def afficher_sidebar_et_selectionner_page(): 
+    """Affiche la barre latérale et sélectionne la page.
 
     Returns
     -------
-    selected_page: str
-        The name of the selected page.
+    page_selectionnee : str
+        Le nom de la page sélectionnée.
     """
-    selected_page = st.sidebar.radio(
-        "my_radio_buttons",
+    st.sidebar.title("Navigation")
+    # Affiche les boutons radio dans la barre latérale
+    # Récupère la page sélectionnée
+    page_selectionnee = st.sidebar.radio(
+        "mes_boutons_radio",
         [
-            "What is streamlit?",
-            "Overview on the datasets",
-            "COVID-19 Cases Evolution",
+            "Qu'est-ce que Streamlit ?",
+            "Vue d'ensemble des données",
+            "Évolution des cas de COVID-19",
         ],
         label_visibility="hidden",
     )
-    return selected_page
+    # Ajoute de l'espace
+    st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
 
-
-def display_authors_sidebar():
-    """Display the authors in the sidebar."""
+    # Affichage des auteurs dans la barre latérale
     st.sidebar.markdown(
         "<p style='font-size: 20px;\
         color: white;\
         font-weight: bold;\
-        '>Authors</p>",
+        '>Auteurs</p>",
         unsafe_allow_html=True,
     )
-    for author in __authors__:
-        st.sidebar.text(author)
+    for auteur in __auteurs__:
+        st.sidebar.text(auteur)
+
+    return page_selectionnee
 
 
-def display_sidebar_and_get_selected_page():
-    """Display the sidebar and get the name of the selected page.
-
-    Returns
-    -------
-    selected_page: str
-        The name of the selected page.
-    """
-    st.sidebar.title("Navigation")
-    selected_page = display_sidebar_page_choices_and_get_selected_page()
-    st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
-    display_authors_sidebar()
-    return selected_page
-
-
-def display_selected_page(selected_page: str):
-    """Display the selected page.
+def afficher_page_selectionnee(selected_page: str):
+    """Affiche la page sélectionnée.
 
     Parameters
     ----------
-    selected_page : str
-        The name of the page to display.
+    page_selectionnee : str
+        Le nom de la page à afficher.
     """
-    if selected_page == "What is streamlit?":
-        display_introduction_page()
-    elif selected_page == "Overview on the datasets":
-        display_datasets_page()
+    if selected_page == "Qu'est-ce que Streamlit ?":
+        affiche_page_intro()
+    elif selected_page == "Vue d'ensemble des données":
+        afficher_page_donnees()
     else:
         display_covid_page()
 
 
+# PROGRAMME PRINCIPAL
 if __name__ == "__main__":
-    # ? est ce qu'on veut garder les radiobuttons ou utiliser la
-    # ? navigation par défaut de streamlit ?
-    NO_SIDEBAR_STYLE = """
-        <style>
-            div[data-testid="stSidebarNav"] {display: none;}
-        </style>
-    """
-    st.markdown(NO_SIDEBAR_STYLE, unsafe_allow_html=True)
+    # NO_SIDEBAR_STYLE = """ 
+    #     <style>
+    #         div[data-testid="stSidebarNav"] {display: none;}
+    #     </style>
+    # """
+    #st.markdown(NO_SIDEBAR_STYLE, unsafe_allow_html=True)
 
-    st.title(PROJECT_TITLE)
-    my_selected_page = display_sidebar_and_get_selected_page()
-    display_selected_page(my_selected_page)
+    st.title("""Évolution des cas de COVID-19 😷""")
+    ma_page = afficher_sidebar_et_selectionner_page()
+    afficher_page_selectionnee(ma_page)

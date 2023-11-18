@@ -6,21 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 
-from common import country_options, df_covid_data_our_countries
-
-
-def verify_dates(start_date: dt, end_date: dt) -> Tuple:
-    """Verify that the start_date is before the end_date.
-
-    Parameters
-    ----------
-    start_date : dt
-        The starting date.
-    end_date : dt
-        The ending date.
-    """
-    if end_date < start_date or end_date == start_date:
-        st.error("Error: The end date must be later than the start date.")
+from pages.datasets import DF_PAYS_COVID, OPTIONS_PAYS
 
 
 def initialize_expander_state_to_expanded():
@@ -39,24 +25,22 @@ def display_form_and_get_results() -> Dict:
     """
     form_results = dict()
     form_results["country"] = st.selectbox(
-        "Select a country", country_options
+        "Select a country", OPTIONS_PAYS
     )
     form_results["color"] = st.color_picker(
         "Select a color for the curve", "#905DB7"
     )
     form_results["start_date"] = st.date_input(
         "Start date",
-        value=date.today() - timedelta(days=1),  # Plus pratique
+        value=date.today() - 3*timedelta(days = 365),
     )
     form_results["end_date"] = st.date_input(
         "End date",
-        # value=form_results["start_date"] + timedelta(days=1),
-        # ce n'est pas pratique
     )
-    form_results["graph"] = st.selectbox(
-        "Select the graph type", ("Curve", "Bar")
-    )
-    verify_dates(form_results["start_date"], form_results["end_date"])
+    #verifier que la date de debut est inferieure a la date de fin
+    if (form_results["end_date"] < form_results["start_date"] or 
+        form_results["end_date"] == form_results["start_date"]):
+        st.error("Error: The end date must be later than the start date.")
     return form_results
 
 
@@ -94,8 +78,8 @@ def get_data_form_results(form_results: Dict) -> DataFrame:
     df_data_form_results : DataFrame
         data on covid cases
     """
-    df_data_form_country = df_covid_data_our_countries[
-        df_covid_data_our_countries["location"] == form_results["country"]
+    df_data_form_country = DF_PAYS_COVID[
+        DF_PAYS_COVID["location"] == form_results["country"]
     ]
 
     df_data_form_results = df_data_form_country[
@@ -110,53 +94,7 @@ def get_data_form_results(form_results: Dict) -> DataFrame:
     ]
 
     return df_data_form_results
-
-
-def display_curve(data: Tuple, form_results: Dict):
-    """Display graph of covid cases as a curve.
-
-    Parameters
-    ----------
-    data : Tuple
-        Tuple containing x and y coordinates to plot the graph.
-    form_results : Dict
-        The dictionnary containing the results of the form.
-    """
-    fig = plt.figure(figsize=(8, 8))
-    plt.plot(
-        data[0],
-        data[1],
-        color=form_results["color"],
-        label="Number of COVID-19 cases",
-    )
-    plt.xlabel("Date")
-    plt.ylabel("Number of cases")
-    plt.title("Evolution of the number of COVID-19 cases over time")
-    plt.xticks(
-        rotation=45
-    )
-    st.pyplot(fig)
-
-
-def display_bar(data: Tuple, form_results: Dict):
-    """Display a bar graph of covid cases.
-
-    Parameters
-    ----------
-    data : Tuple
-        Tuple containing x and y coordinates to plot the graph.
-    form_results : Dict
-        The dictionnary containing the results of the form.
-    """
-    fig = plt.figure(figsize=(8, 8))
-    plt.bar(data[0], data[1], color=form_results["color"])
-    plt.xlabel("Date")
-    plt.ylabel("Number of COVID-19 cases")
-    plt.title("Number of COVID-19 cases per date")
-    plt.grid(axis="y")
-    plt.xticks(rotation=45)
-    st.pyplot(fig)
-
+    
 
 def display_graph_evolution_form_results(form_results: Dict):
     """Display the selected graph of covid cases.
@@ -169,10 +107,19 @@ def display_graph_evolution_form_results(form_results: Dict):
     df_covid_data_form_results = get_data_form_results(form_results)
     x = pd.to_datetime(df_covid_data_form_results["date"])
     y = df_covid_data_form_results["total_cases"]
-    if form_results["graph"] == "Curve":
-        display_curve((x, y), form_results)
-    else:
-        display_bar((x, y), form_results)
+    fig = plt.figure(figsize=(8, 8))
+    plt.plot(
+        x,y,
+        color=form_results["color"],
+        label="Number of COVID-19 cases",
+    )
+    plt.xlabel("Date")
+    plt.ylabel("Number of cases")
+    plt.title("Evolution of the number of COVID-19 cases over time")
+    plt.xticks(
+        rotation=45
+    )
+    st.pyplot(fig)
 
 
 def submit_form_when_done_clicked(form_results: Dict):
@@ -204,5 +151,5 @@ def display_covid_page():
     submit_form_when_done_clicked(form_results)
 
 
-# if __name__ == "__main__":
-#     display_covid_page()
+if __name__ == "__main__":
+    display_covid_page()

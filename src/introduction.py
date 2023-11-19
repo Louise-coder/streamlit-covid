@@ -1,103 +1,135 @@
-''' Ce module contient la fonction pour afficher la page dédiée
-    à introduire streamlit.
-'''
+"""Ce module contient tout ce qui est relatif a la page d'introduction.
+
+Utilisation :
+=============
+Depuis le depôt streamlit-covid/, executez :
+    streamlit run src/introduction.py
+"""
+
+__auteurs__ = (
+    "Takwa BEN RADHIA",
+    "Dounia BENYAKHLAF",
+    "Louise LAM",
+    "Essmay TOUAMI",
+)
+__contacts__ = (
+    "takwa.ben-radhia@etu.u-paris.fr",
+    "dounia.benyakhlaf@etu.u-paris.fr",
+    "louise.lam@etu.u-paris.fr",
+    "essmay.touami@etu.u-paris.fr",
+)
+__copyright__ = "Universite Paris-Cite"
+__date__ = "Novembre 2023"
 
 # IMPORTS
-import streamlit as st
 import folium
+import streamlit as st
 from streamlit_folium import folium_static
-from pages.datasets import DF_PAYS_COVID
+
+from pages.les_datasets_covid import DF_PAYS_COVID
 
 
 # CLASSE CARTE
 class CarteCovid:
     """Classe pour la carte des cas COVID-19."""
+
     def __init__(self, df_initial):
         """Initialise la classe CarteCovid.
 
         Paramètres
         ----------
         df_covid_data : DataFrame
-            Le DataFrame contenant les données COVID.
+            Le DataFrame contenant les donnees COVID.
         """
         self.df_pays_covid = df_initial
 
-
-    def formater_infobulle_proprietes(self, properties, df_index) -> str:
-        """Formate les propriétés pour afficher dans une infobulle.
+    def ajuste_proprietes_infobulle(self, proprietes, df_index) -> str:
+        """Ajuste les proprietes pour afficher dans une infobulle.
 
         Paramètres
         ----------
-        properties : dict
-            Dictionnaire des propriétés du pays.
+        proprietes : Dict
+            Dictionnaire des proprietes du pays.
 
         Retourne
         -------
         infobulle : str
             Texte pour l'infobulle.
         """
-        # Récupère le nom du pays
-        nom_pays = properties["NAME"]
-        # Récupère le nombre total de cas
+        # Recupère le nom du pays
+        nom_pays = proprietes["NAME"]
+        # Recupère le nombre total de cas
         cas_total = df_index.loc[nom_pays, "total_cases"]
         # Traitement des cas où le nombre total est de type float
         if isinstance(cas_total, float):
             cas_total = int(cas_total)
-        # Traitement des cas sans données
-        if nom_pays in ('Suède', 'Angleterre'):
-            cas_total = "Pas de données"
+        # Traitement des cas sans donnees
+        if nom_pays in ("Suède", "Angleterre"):
+            cas_total = "Pas de donnees"
         # Construction du texte de l'infobulle
         infobulle = f"Pays : {nom_pays}<br>Cas totaux : {cas_total}"
         return infobulle
 
-
     def affiche_carte(self):
-        """Affiche la carte correspondant au DataFrame des données COVID.
+        """Affiche la carte correspondant au DataFrame des donnees COVID.
+
         Parameters
         ----------
         self : objet
             L'instance de la classe CarteCovid.
         """
-        # Création de la carte centrée sur l'Europe
-        carte_europe = folium.Map(location=[57, 10], zoom_start=3.3, scrollWheelZoom=False)
+        # Creation de la carte centree sur l'Europe
+        carte_europe = folium.Map(
+            location=[57, 10], zoom_start=3.3, scrollWheelZoom=False
+        )
         # Ajout d'une couche choroplèthe à la carte
         choropleth = folium.Choropleth(
-            # Fichier GeoJSON définissant les frontières des pays
+            # Fichier GeoJSON definissant les frontières des pays
             geo_data="data/covid-map.geojson",
-            # DataFrame contenant les données COVID
+            # DataFrame contenant les donnees COVID
             data=self.df_pays_covid,
             # Colonnes à utiliser dans le DataFrame
             columns=("location", "total_cases"),
-            # Clé pour faire correspondre les données GeoJSON et DataFrame
+            # Cle pour faire correspondre les donnees GeoJSON et DataFrame
             key_on="feature.properties.NAME",
-            # Met en évidence les pays au survol de la souris
+            # Met en evidence les pays au survol de la souris
             highlight=True,
-            # Légende
+            # Legende
             legend_name="Cas totaux de COVID19",
-        ).add_to(carte_europe)  # Ajoute la couche à la carte
+        ).add_to(
+            carte_europe
+        )  # Ajoute la couche à la carte
 
         # Indexation du DataFrame par le nom du pays
         df_index = self.df_pays_covid.set_index("location")
 
-        # Ajout des infobulles personnalisées basées sur le DataFrame
+        # Ajout des infobulles personnalisees basees sur le DataFrame
         for feature in choropleth.geojson.data["features"]:
             # Formatage des infobulles
-            infobulle = self.formater_infobulle_proprietes(
-                            feature["properties"], df_index
-                            )
-            # Ajout des infobulles aux propriétés du GeoJSON
+            infobulle = self.ajuste_proprietes_infobulle(
+                feature["properties"], df_index
+            )
+            # Ajout des infobulles aux proprietes du GeoJSON
             feature["properties"]["infobulle"] = infobulle
 
         # Ajout d'une couche d'infobulles à la carte
         choropleth.geojson.add_child(
             folium.features.GeoJsonTooltip(
-                fields=["infobulle"],  # Les données à afficher
-                labels=True   # Affiche l'étiquette des données
+                fields=["infobulle"],  # Les donnees à afficher
+                labels=True,  # Affiche l'etiquette des donnees
             )
         )
 
         # Affichage de la carte dans le cadre Streamlit
         folium_static(carte_europe, width=700, height=450)
+
+
+def affiche_autrices_sidebar():
+    """Affiche la barre laterale contenant les autrices."""
+    st.sidebar.title("Autrices")
+    # On parcourt chaque autrice et on l'affiche
+    for autrice in __auteurs__:
+        st.sidebar.text(autrice)
 
 
 # FONCTION
@@ -110,7 +142,7 @@ def affiche_page_intro():
         la création et le partage d'applications web personnalisées pour \
         l'apprentissage automatique et la science des données."
     )
-    # Création de l'objet CarteCovid et affichage de la carte
+    # Creation de l'objet CarteCovid et affichage de la carte
     carte_covid = CarteCovid(DF_PAYS_COVID)
     carte_covid.affiche_carte()
 
@@ -123,4 +155,5 @@ def affiche_page_intro():
 
 
 if __name__ == "__main__":
+    affiche_autrices_sidebar()
     affiche_page_intro()

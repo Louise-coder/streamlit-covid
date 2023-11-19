@@ -50,7 +50,7 @@ To run the application, follow these steps:
 
 Navigate to the project directory in your terminal and execute the following command:
 ```bash 
-streamlit run src/demo.py
+streamlit run src/introduction.py
 ```
 After running the above command, a new browser window will open, and you'll be able to interact with the Streamlit Covid Dashboard.
 

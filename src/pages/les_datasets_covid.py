@@ -1,39 +1,33 @@
-''' Ce module contient la fonction pour afficher la page dédiée
-    à l'aperçu des ensembles de données.
-'''
+"""Ce module contient tout ce qui est relatif aux donnees COVID."""
 
 # IMPORTS
 import streamlit as st
 import pandas as pd
 
-
 # CONSTANTES
 CHEMIN_DATA = "data/owid-covid-data.csv"
-OPTIONS_PAYS = [
-    "France",
-    "Germany",
-    "Spain",
-    "Italy",
-    "Sweden",
-    "England"
-]
+OPTIONS_PAYS = ["France", "Germany", "Spain", "Italy", "Sweden", "England"]
 
 
 # FONCTIONS
 def charger_donnees():
-    """Charge et prétraite le jeu de données COVID-19."""
+    """Charge et pretraite le jeu de donnees COVID-19."""
     df_donnees_covid = pd.read_csv(CHEMIN_DATA)
     df_pays_covid = df_donnees_covid[
-                    df_donnees_covid["location"].isin(OPTIONS_PAYS)
-                    ]
+        df_donnees_covid["location"].isin(OPTIONS_PAYS)
+    ]
     return df_pays_covid
 
-DF_PAYS_COVID = charger_donnees()  # on charge les données ici dans une variable globale
+
+DF_PAYS_COVID = (
+    charger_donnees()
+)  # on charge les donnees ici dans une variable globale
+
 
 def afficher_page_donnees():
-    """Affiche la page dédiée à la vue d'ensemble des jeux de données."""
+    """Affiche la page dediee à la vue d'ensemble des jeux de donnees."""
     st.header("Vue d'ensemble du jeu de données")
-    # Source des données
+    # Source des donnees
     st.write(
         "Les données utilisées pour ce projet sont issues du jeu de données \
         COVID-19 de Our World in Data : \

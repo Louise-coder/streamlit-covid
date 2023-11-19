@@ -31,7 +31,7 @@ from pages.covid import display_covid_page
 
 
 # FONCTIONS
-def afficher_sidebar_et_selectionner_page(): 
+def afficher_sidebar_et_selectionner_page():
     """Affiche la barre latérale et sélectionne la page.
 
     Returns
@@ -86,12 +86,12 @@ def afficher_page_selectionnee(selected_page: str):
 
 # PROGRAMME PRINCIPAL
 if __name__ == "__main__":
-    # NO_SIDEBAR_STYLE = """ 
+    # NO_SIDEBAR_STYLE = """
     #     <style>
     #         div[data-testid="stSidebarNav"] {display: none;}
     #     </style>
     # """
-    #st.markdown(NO_SIDEBAR_STYLE, unsafe_allow_html=True)
+    # st.markdown(NO_SIDEBAR_STYLE, unsafe_allow_html=True)
 
     st.title("""Évolution des cas de COVID-19 😷""")
     ma_page = afficher_sidebar_et_selectionner_page()

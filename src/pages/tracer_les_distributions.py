@@ -115,6 +115,7 @@ def affiche_graphe_choisi(resultats_form):
 
 def display_covid_page():
     """Affiche la page correspondant au tracage des distributions COVID."""
+    st.write("Pour tracer une distribution de cas cumulés COVID : ")
     # Afficher et recuperer les donnees du formulaire
     resultats_form = affiche_formulaire_et_recupere_resultats()
     # Lorsque le formulaire est soumis avec le bouton Done

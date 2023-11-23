@@ -22,12 +22,11 @@ __copyright__ = "Universite Paris-Cite"
 __date__ = "Novembre 2023"
 
 # IMPORTS
-import folium
 import streamlit as st
+# POUR LA CARTE
+import folium
 from streamlit_folium import folium_static
-
 from pages.les_datasets_covid import DF_PAYS_COVID
-
 
 # CLASSE CARTE
 class CarteCovid:
@@ -43,33 +42,6 @@ class CarteCovid:
         """
         self.df_pays_covid = df_initial
 
-    def ajuste_proprietes_infobulle(self, proprietes, df_index) -> str:
-        """Ajuste les proprietes pour afficher dans une infobulle.
-
-        Paramètres
-        ----------
-        proprietes : Dict
-            Dictionnaire des proprietes du pays.
-
-        Retourne
-        -------
-        infobulle : str
-            Texte pour l'infobulle.
-        """
-        # Recupère le nom du pays
-        nom_pays = proprietes["NAME"]
-        # Recupère le nombre total de cas
-        cas_total = df_index.loc[nom_pays, "total_cases"]
-        # Traitement des cas où le nombre total est de type float
-        if isinstance(cas_total, float):
-            cas_total = int(cas_total)
-        # Traitement des cas sans donnees
-        if nom_pays in ("Suède", "Angleterre"):
-            cas_total = "Pas de donnees"
-        # Construction du texte de l'infobulle
-        infobulle = f"Pays : {nom_pays}<br>Cas totaux : {cas_total}"
-        return infobulle
-
     def affiche_carte(self):
         """Affiche la carte correspondant au DataFrame des donnees COVID.
 
@@ -83,7 +55,7 @@ class CarteCovid:
             location=[57, 10], zoom_start=3.3, scrollWheelZoom=False
         )
         # Ajout d'une couche choroplèthe à la carte
-        choropleth = folium.Choropleth(
+        folium.Choropleth(
             # Fichier GeoJSON definissant les frontières des pays
             geo_data="data/covid-map.geojson",
             # DataFrame contenant les donnees COVID
@@ -93,35 +65,14 @@ class CarteCovid:
             # Cle pour faire correspondre les donnees GeoJSON et DataFrame
             key_on="feature.properties.NAME",
             # Met en evidence les pays au survol de la souris
-            highlight=True,
+            #highlight=True,
             # Legende
             legend_name="Cas totaux de COVID19",
-        ).add_to(
-            carte_europe
-        )  # Ajoute la couche à la carte
-
-        # Indexation du DataFrame par le nom du pays
-        df_index = self.df_pays_covid.set_index("location")
-
-        # Ajout des infobulles personnalisees basees sur le DataFrame
-        for feature in choropleth.geojson.data["features"]:
-            # Formatage des infobulles
-            infobulle = self.ajuste_proprietes_infobulle(
-                feature["properties"], df_index
-            )
-            # Ajout des infobulles aux proprietes du GeoJSON
-            feature["properties"]["infobulle"] = infobulle
-
-        # Ajout d'une couche d'infobulles à la carte
-        choropleth.geojson.add_child(
-            folium.features.GeoJsonTooltip(
-                fields=["infobulle"],  # Les donnees à afficher
-                labels=True,  # Affiche l'etiquette des donnees
-            )
-        )
+        ).add_to(carte_europe)  # Ajoute la couche à la carte
 
         # Affichage de la carte dans le cadre Streamlit
         folium_static(carte_europe, width=700, height=450)
+
 
 
 def affiche_autrices_sidebar():

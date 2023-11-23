@@ -103,7 +103,7 @@ def affiche_graphe_choisi(resultats_form):
     )
     # Legendes
     plt.xlabel("Dates")
-    plt.xticks(rotation=45)  # rotation des dates pour que ce soit lisible
+    plt.xticks(rotation=45)  # rotation des dates pour incliner
     plt.ylabel("Nombre de cas cumulés")
     plt.title(
         "Évolution du nombre de cas cumulés du COVID-19 au cours du temps"
@@ -119,6 +119,18 @@ def display_covid_page():
     resultats_form = affiche_formulaire_et_recupere_resultats()
     # Lorsque le formulaire est soumis avec le bouton Done
     if st.button("Done", key="done_button"):
+        st.write("")
+        # Affichage d'une description correspondant a la distribution
+        date_debut_fr = dt.strftime(
+            resultats_form["date_debut"], "%d %B %Y"
+        )
+        date_fin_fr = dt.strftime(resultats_form["date_fin"], "%d %B %Y")
+        st.write(
+            f"""Voici l'évolution des cas cumulés de COVID-19 en \
+            {resultats_form["pays"]} du {date_debut_fr} au \
+            {date_fin_fr}:
+            """
+        )
         # Affichage du graphe choisi dans le formulaire
         affiche_graphe_choisi(resultats_form)
 

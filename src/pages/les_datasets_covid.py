@@ -24,7 +24,7 @@ DF_PAYS_COVID = (
 )  # on charge les donnees ici dans une variable globale
 
 
-def afficher_page_donnees():
+def affiche_page_donnees():
     """Affiche la page dediee à la vue d'ensemble des jeux de donnees."""
     st.header("Vue d'ensemble du jeu de données")
     # Source des donnees
@@ -48,4 +48,4 @@ def afficher_page_donnees():
 
 
 if __name__ == "__main__":
-    afficher_page_donnees()
+    affiche_page_donnees()

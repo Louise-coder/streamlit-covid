@@ -96,11 +96,7 @@ def affiche_graphe_choisi(resultats_form):
     y_nb_cas = donnees_choisies["total_cases"]
     # Construction du graphe y_nb_cas = f(x_dates)
     fig = plt.figure(figsize=(8, 8))
-    plt.plot( 
-        x_dates,
-        y_nb_cas,
-        color=resultats_form["couleur"]
-    )
+    plt.plot(x_dates, y_nb_cas, color=resultats_form["couleur"])
     # Legendes
     plt.xlabel("Dates")
     plt.xticks(rotation=45)  # rotation des dates pour incliner
@@ -112,7 +108,7 @@ def affiche_graphe_choisi(resultats_form):
     st.pyplot(fig)
 
 
-def display_covid_page():
+def affiche_page_covid():
     """Affiche la page correspondant au tracage des distributions COVID."""
     st.write("Pour tracer une distribution de cas cumulés COVID : ")
     # Afficher et recuperer les donnees du formulaire
@@ -136,4 +132,4 @@ def display_covid_page():
 
 
 if __name__ == "__main__":
-    display_covid_page()
+    affiche_page_covid()

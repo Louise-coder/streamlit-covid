@@ -23,10 +23,12 @@ __date__ = "Novembre 2023"
 
 # IMPORTS
 import streamlit as st
+
 # POUR LA CARTE
 import folium
 from streamlit_folium import folium_static
 from pages.les_datasets_covid import DF_PAYS_COVID
+
 
 # CLASSE CARTE
 class CarteCovid:
@@ -65,14 +67,15 @@ class CarteCovid:
             # Cle pour faire correspondre les donnees GeoJSON et DataFrame
             key_on="feature.properties.NAME",
             # Met en evidence les pays au survol de la souris
-            #highlight=True,
+            # highlight=True,
             # Legende
             legend_name="Cas totaux de COVID19",
-        ).add_to(carte_europe)  # Ajoute la couche à la carte
+        ).add_to(
+            carte_europe
+        )  # Ajoute la couche à la carte
 
         # Affichage de la carte dans le cadre Streamlit
         folium_static(carte_europe, width=700, height=450)
-
 
 
 def affiche_autrices_sidebar():

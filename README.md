@@ -63,10 +63,10 @@ Alternativement, vous pouvez accéder à l'application directement via le lien S
 
 ## Détails Techniques
 
-- **Python Version**: 3.10
-- **Streamlit Version**: 1.28.0
-- **Matplotlib Version**: 3.8.2
-- **Pandas Version**: 2.1.3
+- **Version Python**: 3.10
+- **Version Streamlit**: 1.28.0
+- **Version Matplotlib**: 3.8.2
+- **Version Pandas**: 2.1.3
 
 
 

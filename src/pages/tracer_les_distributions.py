@@ -25,19 +25,14 @@ def affiche_formulaire_et_recupere_resultats():
         resultats_form["couleur"] = st.color_picker(
             "Choix de la couleur pour la courbe", "#905DB7"
         )
-        resultats_form["date_debut"] = pd.to_datetime(
-            st.date_input(
-                "Date de début",
-                # par defaut on prend debut = 3 ans avant date d'ajd
-                value=date.today() - 3 * timedelta(days=365),
-            )
+        resultats_form["date_debut"] = st.date_input(
+            "Date de début",
+            # par defaut on prend debut = 3 ans avant date d'ajd
+            value=date.today() - 3 * timedelta(days=365),
         )
-        resultats_form["date_fin"] = pd.to_datetime(
-            # par defaut on prend fin = ajd
-            st.date_input(
-                "Date de fin",
-            )
-        )
+        resultats_form["date_fin"] = st.date_input(
+            "Date de fin",
+        )  # par defaut on prend fin = ajd
         # Erreur si dates incompatibles
         if (
             resultats_form["date_fin"] < resultats_form["date_debut"]
@@ -67,14 +62,12 @@ def recupere_donnees(resultats_form):
         DF_PAYS_COVID["location"] == resultats_form["pays"]
     ]
     # Masques pour selectionner la periode entre date_debut et date_fin
-    apres_date_debut = (
-        pd.to_datetime(donnees_de_mon_pays["date"])
-        >= resultats_form["date_debut"]
-    )
-    avant_date_fin = (
-        pd.to_datetime(donnees_de_mon_pays["date"])
-        <= resultats_form["date_fin"]
-    )
+    apres_date_debut = pd.to_datetime(
+        donnees_de_mon_pays["date"]
+    ) >= pd.to_datetime(resultats_form["date_debut"])
+    avant_date_fin = pd.to_datetime(
+        donnees_de_mon_pays["date"]
+    ) <= pd.to_datetime(resultats_form["date_fin"])
     periode_choisie = apres_date_debut & avant_date_fin
     # Application du masque sur les donnees
     donnees_choisies = donnees_de_mon_pays[periode_choisie]
@@ -102,7 +95,8 @@ def affiche_graphe_choisi(resultats_form):
     plt.xticks(rotation=45)  # rotation des dates pour incliner
     plt.ylabel("Nombre de cas cumulés")
     plt.title(
-        "Évolution du nombre de cas cumulés du COVID-19 au cours du temps"
+        f"Nombre de cas cumulés en {resultats_form['pays']} du COVID-19\n \
+        du {resultats_form['date_debut']} au {resultats_form['date_fin']}"
     )
     # Affichage du graphe
     st.pyplot(fig)
@@ -113,20 +107,8 @@ def affiche_page_covid():
     st.write("Pour tracer une distribution de cas cumulés COVID : ")
     # Afficher et recuperer les donnees du formulaire
     resultats_form = affiche_formulaire_et_recupere_resultats()
-    # Lorsque le formulaire est soumis avec le bouton Done
-    if st.button("Done", key="done_button"):
-        st.write("")
-        # Affichage d'une description correspondant a la distribution
-        date_debut_fr = dt.strftime(
-            resultats_form["date_debut"], "%d %B %Y"
-        )
-        date_fin_fr = dt.strftime(resultats_form["date_fin"], "%d %B %Y")
-        st.write(
-            f"""Voici l'évolution des cas cumulés de COVID-19 en \
-            {resultats_form["pays"]} du {date_debut_fr} au \
-            {date_fin_fr}:
-            """
-        )
+    # Lorsque l'utilisateur demande a voir la distribution avec le bouton
+    if st.button("Afficher distribution", key="done_button"):
         # Affichage du graphe choisi dans le formulaire
         affiche_graphe_choisi(resultats_form)
 

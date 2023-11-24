@@ -1,74 +1,74 @@
-# Streamlit COVID-19 Time Series Tracker 😷
+# Suivi des cas de COVID-A9 avec Streamlit 😷
 
-## Table of contents
+## Table des matières
 1. [Introduction](#introduction)
-2. [Project Contributors](#project-contributors)
-3. [Project Description](#project-description)
-4. [Getting Started](#getting-started)
-5. [Technical Details](#technical-details)
+2. [Contributeurs](#project-contributors)
+3. [Description](#project-description)
+4. [Pour Commencer](#getting-started)
+5. [Détails Techniques](#technical-details)
 
 
 ## Introduction
-This project, developed as part of the UE Python2, presents a Streamlit-based Covid19 Dashboard. The dashboard allows users to track the progression of Covid-19 cases over time for selected countries, with options to customize the display. 
+Ce projet, développé dans le cadre de l'UE Python2, présente un tableau de bord Covid-19 basé sur Streamlit. Le tableau de bord permet aux utilisateurs de suivre l'évolution des cas de Covid-19 au fil du temps pour certains pays sélectionnés, avec des options de personnalisation de l'affichage. 
 
-**Streamlit**, the foundational technology behind this application, is an open-source Python library designed for creating interactive web applications effortlessly. It empowers data scientists and developers to transform data, visualizations, and analyses into user-friendly web applications with minimal code. By integrating Streamlit, this project provides a user-friendly interface for monitoring Covid-19 cases, making it accessible and informative !
+**Streamlit**, la technologie fondamentale derrière cette application, est une bibliothèque Python open-source conçue pour créer facilement des applications web interactives. En intégrant Streamlit, ce projet offre une interface user-friendly pour surveiller les cas de Covid-19, la rendant accessible et informative !
 
-## Project Contributors
+## Contributeurs
 - BENRADHIA Takwa
 - BENYAKHLAF Dounia
 - LAM Louise
 - TOUAMI Essmay
 
-## Project Description
-The Streamlit Covid Dashboard provides the following functionalities:
+## Description
+Le tableau de bord Covid Streamlit propose les fonctionnalités suivantes :
 
-1. **Country Selection**: Users can choose one of the following countries: France, Italy, Germany, Sweden, Spain, or England.
+1. **Sélection du Pays**: Les utilisateurs peuvent choisir l'un des pays suivants : France, Italie, Allemagne, Suède, Espagne ou Angleterre.
 
-2. **Color Selection**: Users can customize the color of the line chart representing the Covid-19 cases' evolution.
+2. **Sélection de la Couleur**: Les utilisateurs peuvent personnaliser la couleur du graphique en ligne représentant l'évolution des cas de Covid-19.
 
-3. **Date Range Selection**: Users can specify the start and end dates for visualization.
+3. **Sélection de la Plage de Dates**: Les utilisateurs peuvent spécifier les dates de début et de fin pour la visualisation.
 
-4. **Visualization**: The application uses Matplotlib to display the Covid-19 cases' evolution over time for the selected country.
+4. **Visualisation**:  L'application utilise Matplotlib pour afficher l'évolution des cas de Covid-19 au fil du temps pour le pays sélectionné.
 
-To watch a demonstration of the project, view our [demo video on Canva](https://www.canva.com/design/DAFy1Cxgkag/GLL2fKyUclNy0Ky3sJCWDw/edit?utm_content=DAFy1Cxgkag&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton).
+Pour visionner une démonstration du projet, consultez notre [vidéo de démo sur Canva](https://www.canva.com/design/DAFy1Cxgkag/GLL2fKyUclNy0Ky3sJCWDw/edit?utm_content=DAFy1Cxgkag&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton).
 
 
-## Getting Started
-To run the application, follow these steps:
+## Pour Commencer
+Pour exécuter l'application, suivez ces étapes :
 
-1. Clone this repository.
+1. Clonez ce dépôt.
    ```bash
    git clone <https://github.com/Louise-coder/streamlit-covid>
    ```
 
-2. Install Required Libraries
+2. Installez les bibliothèques requises.
     ```bash
-    pip install streamlit pandas matplotlib folium streamlit_folium # with pip
-    conda install -y streamlit pandas matplotlib folium streamlit_folium # with conda mais tout marche pas...
+    pip install streamlit pandas matplotlib folium streamlit_folium # avec pip
+    conda install -y streamlit pandas matplotlib folium streamlit_folium # avec conda
     ```
 3. Run the Application.
 
-Navigate to the project directory in your terminal and execute the following command:
+Accédez au répertoire du projet dans votre terminal et exécutez la commande suivante :
 ```bash 
-streamlit run src/introduction.py
+streamlit run src/demo.py
 ```
-After running the above command, a new browser window will open, and you'll be able to interact with the Streamlit Covid Dashboard.
+Après avoir exécuté la commande ci-dessus, une nouvelle fenêtre de navigateur s'ouvrira, et vous pourrez interagir avec le tableau de bord Streamlit Covid.
 
-Alternatively, you can access the application directly via the following Streamlit link: 
+Alternativement, vous pouvez accéder à l'application directement via le lien Streamlit suivant :
 
-[![Click here!](https://img.shields.io/badge/Click%20here%21-Open%20Streamlit%20Covid%20Dashboard-blue?style=for-the-badge)](https://your-streamlit-app-link-here)
-
-
+[![Click here!](https://img.shields.io/badge/Click%20here%21-Open%20Streamlit%20Covid%20Dashboard-blue?style=for-the-badge)]()
 
 
-## Technical Details
+
+
+## Détails Techniques
 
 - **Python Version**: 3.10
 - **Streamlit Version**: 1.28.0
-- **Matplotlib Version**: insert_latest_version_here
-- **Pandas Version**: insert_latest_version_here
+- **Matplotlib Version**: 3.8.2
+- **Pandas Version**: 2.1.3
 
 
 
-👋 Explore the latest Covid-19 data with our Streamlit Covid19 Dashboard and stay informed effortlessly !
+👋 Explorez les dernières données sur la COVID-19 avec notre Tableau de Bord Streamlit Covid19 et restez informé(e) sans effort !
 

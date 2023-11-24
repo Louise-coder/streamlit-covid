@@ -3,7 +3,7 @@
 Utilisation :
 =============
 Depuis le depôt streamlit-covid/, executez :
-    streamlit run src/introduction.py
+    streamlit run src/demo.py
 """
 
 __auteurs__ = (

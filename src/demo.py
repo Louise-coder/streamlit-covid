@@ -30,50 +30,37 @@ from streamlit_folium import folium_static
 from pages.les_datasets_covid import DF_PAYS_COVID
 
 
-# CLASSE CARTE
-class CarteCovid:
-    """Classe pour la carte des cas COVID-19."""
+# FONCTIONS
+def affiche_carte(df_pays_covid):
+    """Affiche la carte coloré en fonction des donnees COVID issues du Dataframe.
 
-    def __init__(self, df_initial):
-        """Initialise la classe CarteCovid.
+    Parameters
+    ----------
+    df_covid_data : DataFrame
+        Le DataFrame contenant les donnees COVID.
+    """
+    # Creation de la carte centree sur l'Europe
+    carte_europe = folium.Map(
+        location=[57, 10], zoom_start=3.3, scrollWheelZoom=False
+    )
+    # Ajout d'une couche choroplèthe à la carte
+    folium.Choropleth(
+        # Fichier GeoJSON definissant les frontières des pays
+        geo_data="data/covid-map.geojson",
+        # DataFrame contenant les donnees COVID
+        data= df_pays_covid,
+        # Colonnes à utiliser dans le DataFrame
+        columns=("location", "total_cases"),
+        # Cle pour faire correspondre les donnees GeoJSON et DataFrame
+        key_on="feature.properties.NAME",
+        # Legende
+        legend_name="Cas totaux de COVID19",
+    ).add_to(
+        carte_europe
+    )  # Ajoute la couche à la carte
 
-        Paramètres
-        ----------
-        df_covid_data : DataFrame
-            Le DataFrame contenant les donnees COVID.
-        """
-        self.df_pays_covid = df_initial
-
-    def affiche_carte(self):
-        """Affiche la carte correspondant au DataFrame des donnees COVID.
-
-        Parameters
-        ----------
-        self : objet
-            L'instance de la classe CarteCovid.
-        """
-        # Creation de la carte centree sur l'Europe
-        carte_europe = folium.Map(
-            location=[57, 10], zoom_start=3.3, scrollWheelZoom=False
-        )
-        # Ajout d'une couche choroplèthe à la carte
-        folium.Choropleth(
-            # Fichier GeoJSON definissant les frontières des pays
-            geo_data="data/covid-map.geojson",
-            # DataFrame contenant les donnees COVID
-            data=self.df_pays_covid,
-            # Colonnes à utiliser dans le DataFrame
-            columns=("location", "total_cases"),
-            # Cle pour faire correspondre les donnees GeoJSON et DataFrame
-            key_on="feature.properties.NAME",
-            # Legende
-            legend_name="Cas totaux de COVID19",
-        ).add_to(
-            carte_europe
-        )  # Ajoute la couche à la carte
-
-        # Affichage de la carte dans le cadre Streamlit
-        folium_static(carte_europe, width=700, height=450)
+    # Affichage de la carte dans le cadre Streamlit
+    folium_static(carte_europe, width=700, height=450)
 
 
 def affiche_autrices_sidebar():
@@ -84,7 +71,6 @@ def affiche_autrices_sidebar():
         st.sidebar.text(autrice)
 
 
-# FONCTION
 def affiche_page_intro():
     """Affiche la page 'Qu'est-ce que Streamlit?'."""
     st.header("Qu'est-ce que Streamlit?")
@@ -94,9 +80,8 @@ def affiche_page_intro():
         la création et le partage d'applications web personnalisées pour \
         l'apprentissage automatique et la science des données."
     )
-    # Creation de l'objet CarteCovid et affichage de la carte
-    carte_covid = CarteCovid(DF_PAYS_COVID)
-    carte_covid.affiche_carte()
+    # affichage de la carte à partir du dataframe
+    affiche_carte(DF_PAYS_COVID)
 
     # afficher la description de la carte
     st.write(

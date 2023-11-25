@@ -66,8 +66,6 @@ class CarteCovid:
             columns=("location", "total_cases"),
             # Cle pour faire correspondre les donnees GeoJSON et DataFrame
             key_on="feature.properties.NAME",
-            # Met en evidence les pays au survol de la souris
-            # highlight=True,
             # Legende
             legend_name="Cas totaux de COVID19",
         ).add_to(

@@ -29,13 +29,13 @@ def affiche_page_donnees():
     st.header("Vue d'ensemble du jeu de données")
     # Source des donnees
     st.write(
-        "Les données utilisées pour ce projet sont issues du jeu de données \
-        COVID-19 de Our World in Data : \
+        "Les données utilisées pour ce projet sont issues du jeu de \
+        données COVID-19 de Our World in Data : \
         https://github.com/owid/covid-19-data/tree/master/public/data "
     )
     st.write(
-        "Il est mis à jour quotidiennement et inclut des données sur les cas \
-        confirmés, les décès, les hospitalisations, les tests, les \
+        "Il est mis à jour quotidiennement et inclut des données sur les \
+        cas confirmés, les décès, les hospitalisations, les tests, les \
         vaccinations, ainsi que d'autres variables d'intérêt potentiel."
     )
     # Charge et affiche le dataframe

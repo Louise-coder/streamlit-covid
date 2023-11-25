@@ -1,6 +1,6 @@
 """Ce module contient tout ce qui est relatif aux distributions COVID."""
 
-from datetime import datetime as dt, timedelta, date
+from datetime import timedelta, date
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt

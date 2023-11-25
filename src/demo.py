@@ -102,9 +102,9 @@ def affiche_page_intro():
 
     # afficher la description de la carte
     st.write(
-        "La carte ci-dessus montre les cas totaux de COVID-19 dans certains\
-        pays d'Europe : plus le pays est en bleu foncé, plus il a de cas. \
-        Et les pays gris sont ceux qui n'ont pas de données."
+        "La carte ci-dessus montre les cas totaux de COVID-19 dans \
+        certains pays d'Europe : plus le pays est en bleu foncé, plus il \
+        a de cas. Et les pays gris sont ceux qui n'ont pas de données."
     )
 
 
